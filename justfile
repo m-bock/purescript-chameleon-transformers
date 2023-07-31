@@ -11,3 +11,6 @@ format:
 check-format:
     purs-tidy check 'src/**/*.purs'
     purs-tidy check 'test/**/*.purs'
+
+gen-readme:
+    npx purs-to-md --input-purs demo/SampleReadme.purs --output-md README.md

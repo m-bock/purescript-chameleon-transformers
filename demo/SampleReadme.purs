@@ -1,14 +1,11 @@
-```hs
 
-```
-
+{-
 # purescript-chameleon-transformers
 
 ## Examples
 ### Ctx
+-}
 
-
-```hs
 module Demo.SampleReadme where
 
 import Prelude
@@ -47,4 +44,3 @@ type MyHTML msg = CtxT MyCtx TestHtml msg
 
 result :: forall msg. MyHTML msg
 result = runCtxT viewMain { theme: "dark" }
-```
