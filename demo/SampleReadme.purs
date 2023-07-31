@@ -15,7 +15,7 @@ we need to add to a specific HTML type.
 ## Examples
 ### Ctx
 
-In this example we'rew using the `Ctx` transformer to implicitly pass a theme to a subview.
+In this example we're using the `Ctx` transformer to implicitly pass a theme to a subview.
 -}
 
 module Demo.SampleReadme where
