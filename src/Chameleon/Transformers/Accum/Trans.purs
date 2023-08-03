@@ -2,21 +2,26 @@ module Chameleon.Transformers.Accum.Trans where
 
 import Prelude
 
-import Control.Monad.Writer (runWriter, tell)
-import Data.These (These)
-import Data.Traversable (for)
-import Data.Tuple (Tuple(..))
-import Data.Tuple.Nested (type (/\), (/\))
 import Chameleon.Class (class Html, class MapMaybe, Key)
 import Chameleon.Class as C
 import Chameleon.Transformers.Accum.Class (class Accum, class TellAccum)
 import Chameleon.Transformers.OutMsg.Class (class OutMsg, class RunOutMsg, fromOutHtml)
 import Chameleon.Transformers.OutMsg.Class as O
+import Chameleon.Transformers.FunctorTrans.Class (class FunctorTrans)
+import Control.Monad.Writer (runWriter, tell)
+import Data.These (These)
+import Data.Traversable (for)
+import Data.Tuple (Tuple(..))
+import Data.Tuple.Nested (type (/\), (/\))
 
 data AccumT :: Type -> (Type -> Type) -> Type -> Type
 data AccumT acc html a = AccumT acc (html a)
 
 derive instance (Functor html) => Functor (AccumT acc html)
+
+instance Monoid acc => FunctorTrans (AccumT acc) where
+  lift :: forall html msg. html msg -> AccumT acc html msg
+  lift = AccumT mempty
 
 runAccumT :: forall acc html a. AccumT acc html a -> Tuple (html a) acc
 runAccumT (AccumT acc html) = Tuple html acc

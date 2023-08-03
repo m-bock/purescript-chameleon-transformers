@@ -2,15 +2,16 @@ module Chameleon.Transformers.Ctx.Trans where
 
 import Prelude
 
-import Data.Maybe (Maybe)
-import Data.These (These)
-import Data.Tuple.Nested ((/\))
 import Chameleon.Class (class Html, class MapMaybe, mapMaybe)
 import Chameleon.Class as C
 import Chameleon.Transformers.Accum.Class (class Accum, class TellAccum)
 import Chameleon.Transformers.Accum.Class as Accum
 import Chameleon.Transformers.Ctx.Class (class AskCtx, class Ctx)
 import Chameleon.Transformers.OutMsg.Class (class OutMsg, class RunOutMsg, fromOutHtml, runOutMsg)
+import Chameleon.Transformers.FunctorTrans.Class (class FunctorTrans)
+import Data.Maybe (Maybe)
+import Data.These (These)
+import Data.Tuple.Nested ((/\))
 
 newtype CtxT :: forall k. Type -> (k -> Type) -> k -> Type
 newtype CtxT ctx html a = CtxT (ctx -> html a)
@@ -19,6 +20,12 @@ derive instance (Functor html) => Functor (CtxT ctx html)
 
 runCtxT :: forall ctx html a. CtxT ctx html a -> ctx -> html a
 runCtxT (CtxT f) = f
+
+-- Trans
+
+instance FunctorTrans (CtxT ctx) where
+  lift :: forall html msg. html msg -> CtxT ctx html msg
+  lift mkHtml = CtxT \_ -> mkHtml
 
 -- Ctx
 

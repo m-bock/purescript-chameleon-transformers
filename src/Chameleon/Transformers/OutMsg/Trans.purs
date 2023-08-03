@@ -2,15 +2,21 @@ module Chameleon.Transformers.OutMsg.Trans where
 
 import Prelude
 
-import Data.Maybe (Maybe(..))
-import Data.These (These(..))
 import Chameleon.Class (class Html, class MapMaybe, Prop(..), mapMaybe)
 import Chameleon.Class as C
 import Chameleon.Transformers.OutMsg.Class (class OutMsg, class RunOutMsg)
+import Chameleon.Transformers.FunctorTrans.Class (class FunctorTrans)
+import Data.Maybe (Maybe(..))
+import Data.These (These(..))
 
 newtype OutMsgT out html msg = OutMsgT (html (These msg out))
 
 derive instance (Functor html) => Functor (OutMsgT ctx html)
+
+instance FunctorTrans (OutMsgT out)
+  where
+  lift :: forall html msg. Functor html => html msg -> OutMsgT out html msg
+  lift html = OutMsgT (map This html)
 
 instance (MapMaybe html) => MapMaybe (OutMsgT out html) where
   mapMaybe

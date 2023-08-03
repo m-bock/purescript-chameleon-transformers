@@ -24,6 +24,6 @@ package:
 workspace:
   extra_packages: {}
   package_set:
-    registry: 31.4.0
+    registry: 32.0.0
   build_opts:
     pedantic_packages: true
